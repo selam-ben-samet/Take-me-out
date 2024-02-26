@@ -8,7 +8,7 @@ public class PlayerController : MonoBehaviour
     [Header("Movement Settings")]
     [SerializeField] private float speed;
     
-    [SerializeField] private float _turnSpeed = 1000;
+    
     private Vector2 move;
     public void OnMove(InputAction.CallbackContext context)
     {
@@ -25,7 +25,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         movePlayer();
-        LookAtMouse();
+        
     }
 
     public void movePlayer()
@@ -36,20 +36,6 @@ public class PlayerController : MonoBehaviour
 
         transform.Translate(movement * speed * Time.deltaTime, Space.World);
     }
-    void LookAtMouse()
-    {
-        // Raycast from the camera to the mouse position
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-        if (Physics.Raycast(ray, out hit))
-        {
-            // Calculate the relative direction from the player position to the mouse position
-            Vector3 relative = hit.point - transform.position;
-            relative.y = 0; // Set the y-component to zero to keep the rotation on the same plane
-
-            // Rotate the player towards the relative direction
-            Quaternion rotation = Quaternion.LookRotation(relative, Vector3.up);
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, rotation, _turnSpeed * Time.deltaTime);
-        }
-    }
+    
+    
 }
