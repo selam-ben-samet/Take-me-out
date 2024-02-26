@@ -990,6 +990,7 @@ MonoBehaviour:
   _turnSpeed: 1000
   player: {fileID: 1774753526}
   crosshairImage: {fileID: 680394205}
+  portal: {fileID: 0}
 --- !u!1 &1774753525
 GameObject:
   m_ObjectHideFlags: 0
