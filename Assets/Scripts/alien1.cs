@@ -1,33 +1,56 @@
 using UnityEngine.AI;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using Unity.VisualScripting;
 
 public class alien1 : MonoBehaviour
 {
     [SerializeField] private NavMeshAgent navMeshAgent;
     [SerializeField] private Transform target;
-    private Animator animator;
+    [SerializeField] private float detectionRadius = 1.0f; 
     [SerializeField] private Transform bulletSpawnPoint;
     [SerializeField] private GameObject bulletPrefab;
 
+    [SerializeField] private GameObject youDied;
+
     void Start(){
-        animator = GetComponent<Animator>();
+        
     }
 
     void Update(){
         if(target!=null){
             navMeshAgent.SetDestination(target.position);
-            //animator.Play("flight");
+        
         }
-        // if(target in fov)
-        if(Input.GetKeyDown("z")){
-        animator.Play("shot");
-        Vector3 vector = target.transform.position - bulletSpawnPoint.position;
-        GameObject bullet = Instantiate(bulletPrefab,bulletSpawnPoint.position,Quaternion.identity);
-        Rigidbody bulletRigidbody = bullet.GetComponent<Rigidbody>();
-        bulletRigidbody.velocity = vector * 5f;
+        if(Input.GetKeyDown(KeyCode.R)){
+            SceneManager.LoadScene(0);
+            SceneManager.sceneLoaded += OnSceneLoaded;
+            youDied.SetActive(false);
+        }
+        DetectPlayer();
+
+    }
+    void DetectPlayer()
+    {
+        
+        if (target != null)
+        {
+           
+            float squaredDistance = (target.transform.position - transform.position).sqrMagnitude;
+            float squaredDetectionRadius = detectionRadius * detectionRadius;
+
+            
+            if (squaredDistance <= squaredDetectionRadius)
+            {
+                Time.timeScale = 0;
+                youDied.SetActive(true);
                 
+               
+            }
         }
-
-
+    }
+     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+       Time.timeScale=1;
     }
 }
